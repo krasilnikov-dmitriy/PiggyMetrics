@@ -2,12 +2,10 @@ node {
     stage 'checkout'
     checkout scm
 
-    docker.image('jenkins_slave').inside {
-        node {
+    docker.image('node').inside {
             stage 'main'
-            sh "echo 'Hello World From Docker'"
-        }
+            sh "ls"
     }
     stage 'post'
-    sh "echo 'Hello World'"
+    sh "echo Hello"
 }
