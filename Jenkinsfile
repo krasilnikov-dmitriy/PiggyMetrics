@@ -3,7 +3,7 @@ node {
     checkout scm
 
     docker.withServer("${env.DOCKER_HOST}", "${env.DOCKER_CREDENTIALS_ID}") {
-        docker.image('python').inside {
+        docker.image('python').run {
             stage 'Pew Pew'
             sh "ls"
         }
