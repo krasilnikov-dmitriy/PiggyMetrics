@@ -2,7 +2,7 @@ node {
     stage 'checkout'
     checkout scm
 
-    docker.image('java:8-jre-alpine').inside {
+    docker.image('jenkins_slave').inside {
         node {
             stage 'main'
             sh "echo 'Hello World From Docker'"
