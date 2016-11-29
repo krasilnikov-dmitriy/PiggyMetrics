@@ -3,7 +3,7 @@ node {
     checkout scm
 
     docker.withServer("${env.DOCKER_HOST}", "${env.DOCKER_CREDENTIALS_ID}") {
-        docker.image('anapsix/alpine-java').withRun('-p 8080:80') {c ->
+        docker.image('python').withRun('-p 8080:80') {c ->
             stage 'Pew Pew'
             sh "ls"
         }
