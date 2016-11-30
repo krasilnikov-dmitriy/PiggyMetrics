@@ -16,13 +16,11 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            docker.withServer("${env.DOCKER_HOST}", "${env.DOCKER_CREDENTIALS_ID}") {
-                docker.image('java:8').inside {
-                    sh "env"
-                    sh "echo \$PATH"
-                    sh "ls /usr/bin | grep java"
-                    sh "./gradlew ${project}:build"
-                }
+            docker.image('java:8').withRun("") {
+                sh "env"
+                sh "echo \$PATH"
+                sh "ls /usr/bin | grep java"
+                sh "./gradlew ${project}:build"
             }
         }
 
