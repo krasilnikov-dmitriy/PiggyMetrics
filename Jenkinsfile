@@ -16,7 +16,7 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            docker.image('java:8').withRun("") {
+            docker.image('java:8').withRun("-t") {
                 withEnv(["JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"]) {
                     sh "env"
                     sh "echo \$PATH"
