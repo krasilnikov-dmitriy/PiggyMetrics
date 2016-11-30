@@ -16,22 +16,24 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-//                docker.image('java:8').withRun() { c ->
-//                    sh "./gradlew ${project}:build"
-//                }
-            sh "echo ${project}"
+            docker.image('java:8').withRun() { c ->
+                sh "echo ${project}"
+//                sh "./gradlew ${project}:build"
+            }
         }
 
     }
 }
 
 node {
-    stage('checkout') {
+    stage('Checkout') {
         checkout scm
         stash name: 'sources'
     }
 
-    parallel builds
+    stage('Build') {
+        parallel builds
+    }
 
     stage("Done") {
         sh "echo Done"
