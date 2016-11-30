@@ -20,7 +20,7 @@ for (int i = 0 ; i < projects.size(); i++) {
                 withEnv(["JAVA_HOME_PEW_PEW=/usr/lib/jvm/java-8-openjdk-amd64"]) {
                     sh "pwd"
                     sh "ls -ltr /usr/bin"
-                    sh "java --version"
+                    sh "java -version"
                     sh "./gradlew ${project}:build"
                 }
             }
