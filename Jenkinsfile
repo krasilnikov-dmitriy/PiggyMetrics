@@ -29,10 +29,6 @@
     return builds
 }
 
-
-
-
-
 node {
     stage('checkout') {
         checkout scm
@@ -40,7 +36,7 @@ node {
     }
 }
 
-parallel builds
+parallel builds()
 
 node {
 
