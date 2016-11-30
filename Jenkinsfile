@@ -16,8 +16,7 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            def containerId = sh(returnStdout: true, script: 'cat /proc/self/cgroup | grep -o  -e "docker-.*.scope" | head -n 1 | sed "s/docker-\\(.*\\).scope/\\\\1/"').trim()
-            print "Hello from container: ${containerId}"
+            print "Hello from container: ${env.NODE_NAME}"
             docker.image('java:8').withRun("-t --entrypoint cat") { c ->
                 withEnv(["JAVA_HOME_PEW_PEW=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64"]) {
                     sh "pwd"
