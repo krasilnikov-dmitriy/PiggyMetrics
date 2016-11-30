@@ -1,32 +1,30 @@
-@NonCPS def builds() {
-    def builds = [:]
-    def projects = [
-            'account-service',
-            'auth-service',
-            'config',
-            'gateway',
-            'monitoring',
-            'notification-service',
-            'registry',
-            'statistics-service'
-    ]
-    for (int i = 0 ; i < projects.size(); i++) {
-        def project = projects[i]
+def builds = [:]
+def projects = [
+        'account-service',
+        'auth-service',
+        'config',
+        'gateway',
+        'monitoring',
+        'notification-service',
+        'registry',
+        'statistics-service'
+]
 
-        builds["Build ${project}"] = {
-            node {
-                unstash 'sources'
+for (int i = 0 ; i < projects.size(); i++) {
+    def project = projects[i]
 
-                stage("Build ${project}") {
-                    docker.image('java:8').withRun() { c ->
-                        sh "./gradlew ${project}:build"
-                    }
-                }
+    builds["Build ${project}"] = {
+        node {
+//            unstash 'sources'
+
+            stage("Build ${project}") {
+//                docker.image('java:8').withRun() { c ->
+//                    sh "./gradlew ${project}:build"
+//                }
+                sh "echo ${project}"
             }
         }
     }
-
-    return builds
 }
 
 node {
@@ -36,10 +34,9 @@ node {
     }
 }
 
-parallel builds()
+parallel builds
 
 node {
-
     stage("Done") {
         sh "echo Done"
     }
