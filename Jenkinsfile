@@ -1,12 +1,32 @@
-node {
-    stage 'checkout'
-    checkout scm
+def projects = [
+        'account-service',
+        'auth-service',
+        'config',
+        'gateway',
+        'monitoring',
+        'notification-service',
+        'registry',
+        'statistics-service'
+]
 
-    docker.image('python').withRun() { c ->
-        stage 'Pew Pew'
-        sh "ls"
+node {
+    stage('checkout') {
+        checkout scm
     }
 
-    stage 'post'
-    sh "echo Hello"
+    def builds = [:]
+    projects.each { project ->
+        builds["Build ${project}"] = {
+            docker.image('java:8').withRun() { c ->
+                stage("Build ${project}") {
+                    sh "./gradlew ${project}:build"
+                }
+            }
+        }
+    }
+    parallel builds
+
+    stage("Done") {
+        sh "echo Done"
+    }
 }
