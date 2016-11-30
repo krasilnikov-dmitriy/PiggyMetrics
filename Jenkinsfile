@@ -21,6 +21,7 @@ for (int i = 0 ; i < projects.size(); i++) {
                     sh "pwd"
                     sh "ls -ltr"
                     sh "java -version"
+                    sh "readlink -f /usr/bin/java"
                     sh "./gradlew ${project}:build"
                 }
             }
