@@ -19,7 +19,7 @@ for (int i = 0 ; i < projects.size(); i++) {
             docker.image('java:8').withRun("-t --entrypoint cat") {
                 withEnv(["JAVA_HOME_PEW_PEW=/usr/lib/jvm/java-8-openjdk-amd64"]) {
                     sh "pwd"
-                    sh "ls -ltr /usr/bin"
+                    sh "ls -ltr"
                     sh "java -version"
                     sh "./gradlew ${project}:build"
                 }
