@@ -9,21 +9,22 @@ def projects = [
         'statistics-service'
 ]
 
+def builds = [:]
+projects.each { project ->
+    builds["Build ${project}"] = {
+        docker.image('java:8').withRun() { c ->
+            stage("Build ${project}") {
+                sh "./gradlew ${project}:build"
+            }
+        }
+    }
+}
+
 node {
     stage('checkout') {
         checkout scm
     }
 
-    def builds = [:]
-    projects.each { project ->
-        builds["Build ${project}"] = {
-            docker.image('java:8').withRun() { c ->
-                stage("Build ${project}") {
-                    sh "./gradlew ${project}:build"
-                }
-            }
-        }
-    }
     parallel builds
 
     stage("Done") {
