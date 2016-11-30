@@ -35,6 +35,7 @@ node {
         checkout scm
         stash name: 'sources'
         sh "docker --version"
+        sh "env"
     }
 
     stage('Build') {
