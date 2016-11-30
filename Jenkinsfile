@@ -16,7 +16,7 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            docker.image('java:8').withRun() { c ->
+            docker.image('java:8').inside {
                 sh "env"
                 sh "echo \$PATH"
                 sh "ls /usr/bin | grep java"
