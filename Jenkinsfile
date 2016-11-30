@@ -18,6 +18,7 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             docker.image('java:8').withRun() { c ->
                 sh "echo ${project}"
+                sh "ls ${project}"
 //                sh "./gradlew ${project}:build"
             }
         }
