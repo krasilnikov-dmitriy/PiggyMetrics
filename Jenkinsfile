@@ -17,10 +17,12 @@ for (int i = 0 ; i < projects.size(); i++) {
 
         stage("Build ${project}") {
             docker.image('java:8').withRun("") {
-                sh "env"
-                sh "echo \$PATH"
-                sh "ls /usr/bin | grep java"
-                sh "./gradlew ${project}:build"
+                withEnv(["JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"]) {
+                    sh "env"
+                    sh "echo \$PATH"
+                    sh "ls /usr/bin | grep java"
+                    sh "./gradlew ${project}:build"
+                }
             }
         }
 
