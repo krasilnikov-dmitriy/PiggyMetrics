@@ -19,11 +19,10 @@ for (int i = 0 ; i < projects.size(); i++) {
             def containerId = "${env.NODE_NAME}".split("-").last()
             print "Hello from ${containerId}"
             docker.image('java:8').inside("--volumes-from=${containerId}") {
-                sh "pwd"
                 sh "ls -ltr"
-                sh "java -version"
-                sh "readlink -f /usr/bin/java"
-                sh "./gradlew ${project}:build"
+//                sh "java -version"
+//                sh "readlink -f /usr/bin/java"
+//                sh "./gradlew ${project}:build"
             }
         }
 
