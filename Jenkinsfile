@@ -59,19 +59,23 @@ node {
                description: 'Ticking this box will do a release',
                name: 'Release']])
 
-        sh "echo ${release}"
-    }
+        if (release) {
+            stage("Iterate version") {
+                sh "echo \"Iterate version\""
+            }
 
-    stage("Create docker image tag") {
+            stage("Create docker image tag") {
+                sh "echo \"Create docker image tag\""
+            }
 
-    }
+            stage("Push docker image tag") {
+                sh "echo \"Push docker image tag\""
+            }
 
-    stage("Push docker image tag") {
-
-    }
-
-    stage("Deploy on production") {
-
+            stage("Deploy on production") {
+                sh "echo \"Push docker image tag\""
+            }
+        }
     }
 
     stage('Done') {
