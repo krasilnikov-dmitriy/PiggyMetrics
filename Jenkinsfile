@@ -20,7 +20,8 @@ for (int i = 0 ; i < projects.size(); i++) {
             docker.image('java:8').inside() {
                 sh "java -version"
                 sh "ls -ltr"
-                sh "./gradlew ${project}:build"
+                sh "pwd"
+                sh "./gradlew ${project}:build --info"
             }
         }
 
