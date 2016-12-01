@@ -53,11 +53,13 @@ node {
     }
 
     stage('Release') {
-        input (message: 'Do you want to release this build?',
+        def release = input (message: 'Do you want to release this build?',
                parameters: [[$class: 'BooleanParameterDefinition',
                defaultValue: false,
                description: 'Ticking this box will do a release',
                name: 'Release']])
+
+        sh "echo ${release}"
     }
 
     stage("Create docker image tag") {
