@@ -1,13 +1,6 @@
 def builds = [:]
 def projects = [
         'account-service'
-//        'auth-service',
-//        'config',
-//        'gateway',
-//        'monitoring',
-//        'notification-service',
-//        'registry',
-//        'statistics-service'
 ]
 
 for (int i = 0 ; i < projects.size(); i++) {
