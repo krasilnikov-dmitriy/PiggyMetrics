@@ -18,6 +18,8 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             def containerId = "${env.NODE_NAME}".split("-").last()
             print "Hello from ${containerId}"
+            sh "ls -ltr /home/jenkins"
+            sh "ls -ltr /home/jenkins/.docker/"
             docker.image('java:8').inside("--volumes-from ${containerId}") {
                 sh "ls -ltr"
 //                sh "java -version"
