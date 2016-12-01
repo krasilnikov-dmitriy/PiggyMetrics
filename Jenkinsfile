@@ -14,7 +14,7 @@ for (int i = 0 ; i < projects.size(); i++) {
                 sh "java -version"
                 sh "ls -ltr"
                 sh "pwd"
-                sh "./gradlew ${project}:build --info"
+                sh "./gradlew ${project}:build --stacktrace"
             }
         }
 
