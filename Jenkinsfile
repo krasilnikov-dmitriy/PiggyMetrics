@@ -49,7 +49,7 @@ node {
     }
 
     stage('Integration tests') {
-        parallel componentTests
+        sh "echo \"Integration tests\""
     }
 
     stage('Release') {
@@ -58,18 +58,18 @@ node {
                defaultValue: false,
                description: 'Ticking this box will do a release',
                name: 'Release']])
+    }
 
-        stage("Create docker image tag") {
+    stage("Create docker image tag") {
 
-        }
+    }
 
-        stage("Push docker image tag") {
+    stage("Push docker image tag") {
 
-        }
+    }
 
-        stage("Deploy on production") {
+    stage("Deploy on production") {
 
-        }
     }
 
     stage('Done') {
