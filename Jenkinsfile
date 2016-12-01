@@ -1,6 +1,14 @@
 def builds = [:]
+def componentTests = [:]
 def projects = [
-        'account-service'
+        'account-service',
+        'auth-service',
+        'config',
+        'gateway',
+        'monitoring',
+        'notification-service',
+        'registry',
+        'statistics-service'
 ]
 
 for (int i = 0 ; i < projects.size(); i++) {
@@ -9,15 +17,16 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            def containerId = "${env.NODE_NAME}".split("-").last()
             docker.image('java:8').inside() {
-                sh "java -version"
-                sh "ls -ltr"
-                sh "pwd"
-                sh "./gradlew ${project}:build --stacktrace"
+                sh "echo \"Build ${project}\""
             }
         }
+    }
 
+    componentTests["Component tests for ${project}"] = {
+        docker.image('java:8').inside() {
+            sh "echo \"Component tests for ${project}\""
+        }
     }
 }
 
@@ -25,15 +34,45 @@ node {
     stage('Checkout') {
         checkout scm
         stash name: 'sources'
-        sh "docker --version"
-        sh "env"
     }
 
     stage('Build') {
         parallel builds
     }
 
-    stage("Done") {
+    stage("Push images") {
+        sh "echo Push images"
+    }
+
+    stage('Component tests') {
+        parallel componentTests
+    }
+
+    stage('Integration tests') {
+        parallel componentTests
+    }
+
+    stage('Release') {
+        input (message: 'Do you want to release this build?',
+               parameters: [[$class: 'BooleanParameterDefinition',
+               defaultValue: false,
+               description: 'Ticking this box will do a release',
+               name: 'Release']])
+
+        stage("Create docker image tag") {
+
+        }
+
+        stage("Push docker image tag") {
+
+        }
+
+        stage("Deploy on production") {
+
+        }
+    }
+
+    stage('Done') {
         sh "echo Done"
     }
 }
