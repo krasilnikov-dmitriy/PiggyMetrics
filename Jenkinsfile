@@ -18,10 +18,9 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             def containerId = "${env.NODE_NAME}".split("-").last()
             docker.image('java:8').inside() {
-                sh "echo Hello"
 //                sh "java -version"
 //                sh "readlink -f /usr/bin/java"
-//                sh "./gradlew ${project}:build"
+                sh "./gradlew ${project}:build"
             }
         }
 
