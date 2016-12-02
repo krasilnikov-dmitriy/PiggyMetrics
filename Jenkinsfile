@@ -46,7 +46,7 @@ node {
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        gradleBuilder.inside("-t") {
+        gradleBuilder.inside("-t --dns 8.8.8.8") {
             sh "ls -ltr"
             sh "cat /etc/resolve.conf"
             sh "ping ya.ru"
