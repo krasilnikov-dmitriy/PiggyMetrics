@@ -17,7 +17,8 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            docker.image('java:8').inside() {
+            def builder = docker.image('jenkins/builders/GradleDockerfile').build()
+            builder.inside() {
                 sh "echo \"Build ${project}\""
             }
         }
