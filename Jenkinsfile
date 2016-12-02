@@ -11,13 +11,14 @@ def projects = [
         'statistics-service'
 ]
 
+def builder = docker.build('gradle-builder', 'jenkins/gradle-builder')
+
 for (int i = 0 ; i < projects.size(); i++) {
     def project = projects[i]
 
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            def builder = docker.build('gradle-builder', 'jenkins/gradle-builder')
             builder.inside() {
                 sh "gradle ${project}:build"
             }
