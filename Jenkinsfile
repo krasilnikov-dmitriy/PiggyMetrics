@@ -44,7 +44,7 @@ node {
             stash name: 'sources'
         }
 
-        sh "ping 93.158.134.3 > ping_host.txt"
+        sh "ping 93.158.134.3 -c 4> ping_host.txt"
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
@@ -52,9 +52,8 @@ node {
             sh "ls -ltr"
             sh "uname -a"
             sh "cat /etc/resolv.conf"
-            sh "cat /etc/NetworkManager/NetworkManager.conf"
-            sh "ping 93.158.134.3 > ping.txt"
-            sh "ping 93.158.134.3 > ping.txt"
+            sh "ping 93.158.134.3 -c 4 > ping.txt"
+            sh "ping ya.ru -c 1 > ping.txt"
             sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
             sh 'ls -ltr'
