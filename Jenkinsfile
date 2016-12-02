@@ -42,6 +42,7 @@ node {
         stage('Checkout') {
             checkout scm
             stash name: 'sources'
+            sh './gradlew config:build'
         }
 
         gradleBuilder = docker.build('gradle-builder', 'jenkins/gradle-builder')
@@ -49,9 +50,6 @@ node {
         gradleBuilder.inside() {
             sh "ls -ltr"
             sh 'gradle config:build; echo $? > status'
-            def r = readFile('status').trim()
-
-            print r
 
             sh "gradle config:build > pewpew_build.txt"
             def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
