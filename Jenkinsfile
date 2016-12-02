@@ -21,8 +21,7 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             gradleBuilder.inside() {
                 sh "ls -ltr"
-                sh "env"
-                sh "(gradle ${project}:build --info && echo \"Done\") || gradle --version"
+                sh "gradle --version"
             }
         }
     }
