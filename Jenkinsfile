@@ -46,7 +46,7 @@ node {
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        gradleBuilder.inside() {
+        gradleBuilder.inside("-t") {
             sh "ls -ltr"
             sh 'gradle --version --debug > version_debug.out'
         }
