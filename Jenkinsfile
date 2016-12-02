@@ -48,8 +48,6 @@ node {
 
         gradleBuilder.inside() {
             sh "ls -ltr"
-            sh "echo \$USER"
-            sh "gradle --version > pewpewpewpew.txt"
             sh "gradle config:build > pewpew_build.txt"
             def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
             println(lines)
