@@ -50,8 +50,7 @@ node {
             sh "ls -ltr"
             sh "uname -a"
             sh "cat /etc/resolv.conf"
-            sh "ifconfig"
-            sh "ping ya.ru"
+            sh "ping ya.ru > ping.txt"
             sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
             sh 'ls -ltr'
