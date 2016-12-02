@@ -49,7 +49,7 @@ node {
         gradleBuilder.inside("-t --dns 8.8.8.8") {
             sh "ls -ltr"
             sh "uname -a"
-            sh "cat resolv.conf"
+            sh "cat /etc/resolv.conf"
             sh "ifconfig"
             sh "ping ya.ru"
             sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
