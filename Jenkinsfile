@@ -46,8 +46,8 @@ node {
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        gradleBuilder.inside("-t --dns 8.8.8.8 --net host") {
-            sh "sleep 0.1"
+        gradleBuilder.inside() {
+            sh "sleep 0.1 &&"
             sh "ls -ltr"
             sh "uname -a"
             sh "while date ; do /bin/sleep 1; done"
