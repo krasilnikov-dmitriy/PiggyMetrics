@@ -40,20 +40,28 @@ for (int i = 0 ; i < projects.size(); i++) {
 node {
     ws("${pwd()}/${java.util.UUID.randomUUID()}") {
         stage('Checkout') {
-            checkout scm
-            stash name: 'sources'
-            sh "while date ; do /bin/sleep 0.001; done"
+//            checkout scm
+//            stash name: 'sources'
+//            sh "while date ; do /bin/sleep 0.001; done"
         }
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        docker.image('gradle_builder').inside() {
-            sh "ls -ltr"
-            sh "uname -a"
-            sh "while date ; do /bin/sleep 0.001; done"
-            sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
-            sh 'gradle --version --debug --stacktrace > version_debug.out'
-            sh 'ls -ltr'
+        try {
+            docker.image('gradle_builder').inside() {
+                try {
+                    sh "ls -ltr"
+                    sh "uname -a"
+                    sh "while date ; do /bin/sleep 0.001; done"
+                    sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
+                    sh 'gradle --version --debug --stacktrace > version_debug.out'
+                    sh 'ls -ltr'
+                } catch (Exception ex) {
+                    sh "echo ${ex}"
+                }
+            }
+        } catch (Exception ex) {
+            sh "echo ${ex}"
         }
 
         stage('Build') {
