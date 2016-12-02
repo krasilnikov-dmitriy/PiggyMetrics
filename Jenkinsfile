@@ -44,6 +44,8 @@ node {
             stash name: 'sources'
         }
 
+        sh "ping 93.158.134.3 > ping_host.txt"
+
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         gradleBuilder.inside("-t --dns 8.8.8.8") {
