@@ -21,7 +21,8 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             gradleBuilder.inside() {
                 sh "ls -ltr"
-                sh "gradle --version"
+                sh "echo \$USER"
+                sh "whoami"
             }
         }
     }
