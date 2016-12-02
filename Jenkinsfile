@@ -49,7 +49,7 @@ node {
         gradleBuilder.inside() {
             sh "ls -ltr"
             sh 'env'
-            sh './gradlew config:build'
+            sh './gradlew config:build > output.txt'
         }
 
         stage('Build') {
