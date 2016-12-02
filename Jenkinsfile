@@ -48,6 +48,8 @@ node {
 
         gradleBuilder.inside("-t --dns 8.8.8.8") {
             sh "ls -ltr"
+            sh "uname -a"
+            sh "ls -ltr /etc"
             sh "ping ya.ru"
             sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
