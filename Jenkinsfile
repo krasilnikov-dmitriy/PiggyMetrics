@@ -49,10 +49,6 @@ node {
         gradleBuilder.inside("-t --dns 8.8.8.8 --net host") {
             sh "ls -ltr"
             sh "uname -a"
-            sh "cat /etc/resolv.conf"
-            sh "env"
-            sh "sleep 1000"
-            sh "cat /etc/resolv.conf"
             sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
             sh 'ls -ltr'
