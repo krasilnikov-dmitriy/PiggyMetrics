@@ -48,7 +48,8 @@ node {
 
         gradleBuilder.inside("-t") {
             sh "ls -ltr"
-            sh 'gradle --version --debug > version_debug.out'
+            sh 'gradle --version --debug --stacktrace > version_debug.out'
+            sh 'ls -ltr'
         }
 
         stage('Build') {
