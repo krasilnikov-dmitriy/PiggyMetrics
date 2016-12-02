@@ -58,10 +58,14 @@ node {
                     sh 'ls -ltr'
                 } catch (Exception ex) {
                     sh "echo ${ex}"
+                    ex.printStackTrace()
+                    sh "echo ${ex.stackTrace}"
                 }
             }
         } catch (Exception ex) {
             sh "echo ${ex}"
+            ex.printStackTrace()
+            sh "echo ${ex.stackTrace}"
         }
 
         stage('Build') {
