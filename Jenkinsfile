@@ -48,7 +48,7 @@ node {
 
         gradleBuilder.inside() {
             sh "ls -ltr"
-            sh 'gradle config:build'
+            sh 'gradle config:build --debug'
         }
 
         stage('Build') {
