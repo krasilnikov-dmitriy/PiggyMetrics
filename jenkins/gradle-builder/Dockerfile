@@ -18,4 +18,6 @@ RUN cd /usr/lib \
 ENV GRADLE_HOME /usr/lib/gradle
 ENV PATH $PATH:$GRADLE_HOME/bin
 
+COPY ./../resolv.conf /etc/resolv.conf
+
 VOLUME ["/home/jenkins/workspace"]
