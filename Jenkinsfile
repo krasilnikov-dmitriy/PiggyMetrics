@@ -47,10 +47,9 @@ node {
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         gradleBuilder.inside() {
-            sh "sleep 0.1"
             sh "ls -ltr"
             sh "uname -a"
-            sh "while date ; do /bin/sleep 1; done"
+            sh "while date ; do /bin/sleep 0.001; done"
             sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
             sh 'ls -ltr'
