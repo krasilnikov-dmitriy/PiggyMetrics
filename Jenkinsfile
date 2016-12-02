@@ -47,7 +47,7 @@ node {
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         gradleBuilder.inside() {
-            sh "sleep 0.1 &&"
+            sh "sleep 0.1"
             sh "ls -ltr"
             sh "uname -a"
             sh "while date ; do /bin/sleep 1; done"
