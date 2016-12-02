@@ -22,7 +22,7 @@ for (int i = 0 ; i < projects.size(); i++) {
             gradleBuilder.inside() {
                 sh "ls -ltr"
                 sh "echo \$USER"
-                sh "whoami"
+                sh "gradle --version"
             }
         }
     }
