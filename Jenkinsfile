@@ -21,7 +21,7 @@ for (int i = 0 ; i < projects.size(); i++) {
         stage("Build ${project}") {
             gradleBuilder.inside() {
                 sh "ls -ltr"
-                sh "sleep 100"
+                sh "env"
                 sh "gradle ${project}:build --info"
             }
         }
