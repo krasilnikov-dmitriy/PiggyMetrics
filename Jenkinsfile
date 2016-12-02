@@ -22,6 +22,7 @@ for (int i = 0 ; i < projects.size(); i++) {
             gradleBuilder.inside() {
                 sh "ls -ltr"
                 sh "echo \$USER"
+                sh "gradle --version > pewpewpewpew.txt"
                 def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
                 println(lines)
                 sh "echo ${lines}"
