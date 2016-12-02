@@ -11,7 +11,7 @@ def projects = [
         'statistics-service'
 ]
 
-def builder = docker.build('gradle-builder', 'jenkins/gradle-builder')
+def gradleBuilder
 
 for (int i = 0 ; i < projects.size(); i++) {
     def project = projects[i]
@@ -19,7 +19,7 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            builder.inside() {
+            gradleBuilder.inside() {
                 sh "gradle ${project}:build"
             }
         }
@@ -38,6 +38,8 @@ node {
             checkout scm
             stash name: 'sources'
         }
+
+        gradleBuilder = docker.build('gradle-builder', 'jenkins/gradle-builder')
 
         stage('Build') {
             parallel builds
