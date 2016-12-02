@@ -48,7 +48,7 @@ node {
 
         gradleBuilder.inside() {
             sh "ls -ltr"
-            sh 'env'
+            sh 'export JAVA_HOME=$(readlink -f /usr/bin/java)'
             sh './gradlew config:build > output.txt'
         }
 
