@@ -38,7 +38,7 @@ for (int i = 0 ; i < projects.size(); i++) {
 }
 
 node {
-    ws("${pwd()}/${java.util.UUID.randomUUID()}") {
+//    ws("${pwd()}/${java.util.UUID.randomUUID()}") {
         stage('Checkout') {
 //            checkout scm
 //            stash name: 'sources'
@@ -73,7 +73,7 @@ node {
         }
 
         stage('Component tests') {
-            parallel componentTests
+//            parallel componentTests
         }
 
         stage('Integration tests') {
@@ -81,33 +81,33 @@ node {
         }
 
         stage('Release') {
-            def release = input(message: 'Do you want to release this build?',
-                    parameters: [[$class      : 'BooleanParameterDefinition',
-                                  defaultValue: false,
-                                  description : 'Ticking this box will do a release',
-                                  name        : 'Release']])
-
-            if (release) {
-                stage("Iterate version") {
-                    sh "echo \"Iterate version\""
-                }
-
-                stage("Create docker image tag") {
-                    sh "echo \"Create docker image tag\""
-                }
-
-                stage("Push docker image tag") {
-                    sh "echo \"Push docker image tag\""
-                }
-
-                stage("Deploy on production") {
-                    sh "echo \"Push docker image tag\""
-                }
-            }
+//            def release = input(message: 'Do you want to release this build?',
+//                    parameters: [[$class      : 'BooleanParameterDefinition',
+//                                  defaultValue: false,
+//                                  description : 'Ticking this box will do a release',
+//                                  name        : 'Release']])
+//
+//            if (release) {
+//                stage("Iterate version") {
+//                    sh "echo \"Iterate version\""
+//                }
+//
+//                stage("Create docker image tag") {
+//                    sh "echo \"Create docker image tag\""
+//                }
+//
+//                stage("Push docker image tag") {
+//                    sh "echo \"Push docker image tag\""
+//                }
+//
+//                stage("Deploy on production") {
+//                    sh "echo \"Push docker image tag\""
+//                }
+//            }
         }
 
         stage('Done') {
             sh "echo Done"
         }
-    }
+//    }
 }
