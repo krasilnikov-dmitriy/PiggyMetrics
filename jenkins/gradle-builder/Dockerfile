@@ -19,6 +19,3 @@ ENV GRADLE_HOME /usr/lib/gradle
 ENV PATH $PATH:$GRADLE_HOME/bin
 
 VOLUME ["/home/jenkins/workspace"]
-
-ENTRYPOINT ["gradle"]
-CMD ["-version"]

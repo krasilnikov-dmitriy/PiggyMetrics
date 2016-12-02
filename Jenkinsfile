@@ -44,12 +44,11 @@ node {
             stash name: 'sources'
         }
 
-        gradleBuilder = docker.build('gradle-builder', 'jenkins/gradle-builder')
+        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         gradleBuilder.inside() {
             sh "ls -ltr"
-            sh 'export JAVA_HOME=$(readlink -f /usr/bin/java)'
-            sh './gradlew config:build > output.txt'
+            sh './gradlew config:build'
         }
 
         stage('Build') {
