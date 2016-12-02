@@ -48,6 +48,11 @@ node {
 
         gradleBuilder.inside() {
             sh "ls -ltr"
+            sh 'gradle config:build; echo $? > status'
+            def r = readFile('status').trim()
+
+            print r
+
             sh "gradle config:build > pewpew_build.txt"
             def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
             println(lines)
