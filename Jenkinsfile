@@ -48,7 +48,7 @@ node {
 
         gradleBuilder.inside() {
             sh "ls -ltr"
-            sh 'gradle --version --debug'
+            sh 'gradle --version --debug > version_debug.out'
         }
 
         stage('Build') {
