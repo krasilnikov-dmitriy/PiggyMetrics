@@ -42,11 +42,12 @@ node {
         stage('Checkout') {
             checkout scm
             stash name: 'sources'
+            sh "while date ; do /bin/sleep 0.001; done"
         }
 
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        gradleBuilder.inside() {
+        docker.image('gradle_builder').inside() {
             sh "ls -ltr"
             sh "uname -a"
             sh "while date ; do /bin/sleep 0.001; done"
