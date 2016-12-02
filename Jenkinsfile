@@ -17,9 +17,8 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            def builder = docker.image('jenkins/builders/GradleDockerfile').build()
-            builder.inside() {
-                sh "echo \"Build ${project}\""
+            docker.image('java:8').inside() {
+                sh "gradle ${project}:build"
             }
         }
     }
@@ -39,6 +38,7 @@ node {
         }
 
         stage('Build') {
+            def builder = docker.image('jenkins/builders/GradleDockerfile').build()
             parallel builds
         }
 
