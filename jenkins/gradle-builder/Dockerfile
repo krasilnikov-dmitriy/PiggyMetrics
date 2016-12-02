@@ -1,13 +1,6 @@
 FROM centos:7
 MAINTAINER Maxfield Stewart
 
-RUN echo $'[dockerrepo] \n\
-name            = Docker Repository \n\
-baseurl         = https://yum.dockerproject.org/repo/main/centos/7/ \n\
-enabled         = 1 \n\
-gpgcheck        = 1 \n\
-gpgkey=https://yum.dockerproject.org/gpg' > /etc/yum.repos.d/docker.repo
-
 # Install Essentials
 RUN yum update -y && \
     yum clean all
@@ -15,7 +8,6 @@ RUN yum update -y && \
 # Install Packages
 RUN yum install -y wget && \
     yum install -y unzip && \
-	yum install -y openssh-server && \
 	yum install -y java-1.8.0-openjdk && \
 	yum install -y sudo && \
 	yum clean all
