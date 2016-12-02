@@ -19,14 +19,14 @@ for (int i = 0 ; i < projects.size(); i++) {
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-            gradleBuilder.inside() {
-                sh "ls -ltr"
-                sh "echo \$USER"
-                sh "gradle --version > pewpewpewpew.txt"
-                def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
-                println(lines)
-                sh "echo ${lines}"
-            }
+//            gradleBuilder.inside() {
+//                sh "ls -ltr"
+//                sh "echo \$USER"
+//                sh "gradle --version > pewpewpewpew.txt"
+//                def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
+//                println(lines)
+//                sh "echo ${lines}"
+//            }
         }
     }
 
@@ -45,6 +45,16 @@ node {
         }
 
         gradleBuilder = docker.build('gradle-builder', 'jenkins/gradle-builder')
+
+        gradleBuilder.inside() {
+            sh "ls -ltr"
+            sh "echo \$USER"
+            sh "gradle --version > pewpewpewpew.txt"
+            sh "gradle config:build > pewpew_build.txt"
+            def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
+            println(lines)
+            sh "echo ${lines}"
+        }
 
         stage('Build') {
             parallel builds
