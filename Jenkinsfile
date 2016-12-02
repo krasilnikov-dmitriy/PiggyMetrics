@@ -48,6 +48,7 @@ node {
 
         gradleBuilder.inside("-t") {
             sh "ls -ltr"
+            sh "wget https://services.gradle.org/distributions/gradle-3.2-all.zip"
             sh 'gradle --version --debug --stacktrace > version_debug.out'
             sh 'ls -ltr'
         }
