@@ -55,7 +55,7 @@ node {
 //                    sh "uname -a"
 //                    sh "while date ; do /bin/sleep 0.001; done"001
 //                    sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
-//                    sh 'gradle ./build'
+                    sh 'gradle config:build'
 //                    sh 'ls -ltr'
                 } catch (Exception ex) {
                     sh "echo ${ex}"
