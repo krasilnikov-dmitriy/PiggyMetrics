@@ -45,16 +45,17 @@ node {
 //            sh "while date ; do /bin/sleep 0.001; done"
         }
 
-//        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
+        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         try {
-            docker.image('gradle_builder').inside() {
+            gradleBuilder.inside() {
                 try {
-//                    sh "ls -ltr"
+                    sh "env"
+                    sh "readlink -f /usr/bin/java"
 //                    sh "uname -a"
 //                    sh "while date ; do /bin/sleep 0.001; done"001
 //                    sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
-                    sh 'gradle ./build'
+//                    sh 'gradle ./build'
 //                    sh 'ls -ltr'
                 } catch (Exception ex) {
                     sh "echo ${ex}"
