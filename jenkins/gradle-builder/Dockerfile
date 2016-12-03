@@ -26,6 +26,7 @@ RUN cd /usr/lib \
  && rm "gradle-bin.zip"
 
 # Set Appropriate Environmental Variables
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64/
 ENV GRADLE_HOME /usr/lib/gradle
 ENV PATH $PATH:$GRADLE_HOME/bin
 
