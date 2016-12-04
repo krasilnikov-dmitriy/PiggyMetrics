@@ -21,7 +21,10 @@ for (int i = 0; i < projects.size(); i++) {
         stage("Build ${project}") {
 
             gradleBuilder.inside() {
-                sh "gradle ${project}:build"
+                ws("${pwd()}/${java.util.UUID.randomUUID()}") {
+                    unstash 'sources'
+                    sh "gradle ${project}:build"
+                }
             }
         }
     }
@@ -37,7 +40,7 @@ node {
 //    ws("${pwd()}/${java.util.UUID.randomUUID()}") {
     stage('Checkout') {
         checkout scm
-//            stash name: 'sources'
+            stash name: 'sources'
 //            sh "while date ; do /bin/sleep 0.001; done"
     }
 
