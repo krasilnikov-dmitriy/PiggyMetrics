@@ -23,6 +23,7 @@ for (int i = 0; i < projects.size(); i++) {
             gradleBuilder.inside() {
                 ws("${pwd()}/${java.util.UUID.randomUUID()}") {
                     unstash 'sources'
+                    sh "export GRADLE_USER_HOME=${pwd()}/${java.util.UUID.randomUUID()}"
                     sh "gradle ${project}:build"
                 }
             }
@@ -41,7 +42,6 @@ node {
     stage('Checkout') {
         checkout scm
             stash name: 'sources'
-//            sh "while date ; do /bin/sleep 0.001; done"
     }
 
     gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
@@ -63,9 +63,9 @@ node {
     }
 
     stage('Publish test reports') {
-        publishers {
-            allure(['allure-results'])
-        }
+//        publishers {
+//            allure(['allure-results'])
+//        }
     }
 
     stage('Release') {
