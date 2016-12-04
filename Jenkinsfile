@@ -13,20 +13,16 @@ def projects = [
 
 def gradleBuilder
 
-for (int i = 0 ; i < projects.size(); i++) {
+for (int i = 0; i < projects.size(); i++) {
     def project = projects[i]
 
     builds["Build ${project}"] = {
 
         stage("Build ${project}") {
-//            gradleBuilder.inside() {
-//                sh "ls -ltr"
-//                sh "echo \$USER"
-//                sh "gradle --version > pewpewpewpew.txt"
-//                def lines = sh(script: 'gradle --version', returnStdout: true).split("\r?\n")
-//                println(lines)
-//                sh "echo ${lines}"
-//            }
+
+            gradleBuilder.inside() {
+                sh "gradle ${project}:build"
+            }
         }
     }
 
@@ -39,53 +35,37 @@ for (int i = 0 ; i < projects.size(); i++) {
 
 node {
 //    ws("${pwd()}/${java.util.UUID.randomUUID()}") {
-        stage('Checkout') {
-            checkout scm
+    stage('Checkout') {
+        checkout scm
 //            stash name: 'sources'
 //            sh "while date ; do /bin/sleep 0.001; done"
-        }
+    }
 
-        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
+    gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        try {
-            gradleBuilder.inside() {
-                try {
-                    sh "env"
-                    sh "readlink -f /usr/bin/java"
-//                    sh "uname -a"
-//                    sh "while date ; do /bin/sleep 0.001; done"001
-//                    sh "wget -v https://services.gradle.org/distributions/gradle-3.2-all.zip"
-                    sh 'gradle config:build'
-//                    sh 'ls -ltr'
-                } catch (Exception ex) {
-                    sh "echo ${ex}"
-//                    ex.printStackTrace()
-                    sh "echo ${ex.stackTrace}"
-                }
-            }
-        } catch (Exception ex) {
-            sh "echo ${ex}"
-//            ex.printStackTrace()
-            sh "echo ${ex.stackTrace}"
-        }
+    stage('Build') {
+        parallel builds
+    }
 
-        stage('Build') {
-            parallel builds
-        }
+    stage("Push images") {
+        sh "echo Push images"
+    }
 
-        stage("Push images") {
-            sh "echo Push images"
-        }
-
-        stage('Component tests') {
+    stage('Component tests') {
 //            parallel componentTests
-        }
+    }
 
-        stage('Integration tests') {
-            sh "echo \"Integration tests\""
-        }
+    stage('Integration tests') {
+        sh "echo \"Integration tests\""
+    }
 
-        stage('Release') {
+    stage('Publish test reports') {
+        publishers {
+            allure(['allure-results'])
+        }
+    }
+
+    stage('Release') {
 //            def release = input(message: 'Do you want to release this build?',
 //                    parameters: [[$class      : 'BooleanParameterDefinition',
 //                                  defaultValue: false,
@@ -109,10 +89,10 @@ node {
 //                    sh "echo \"Push docker image tag\""
 //                }
 //            }
-        }
+    }
 
-        stage('Done') {
-            sh "echo Done"
-        }
+    stage('Done') {
+        sh "echo Done"
+    }
 //    }
 }
