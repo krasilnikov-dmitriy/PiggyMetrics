@@ -23,8 +23,7 @@ for (int i = 0; i < projects.size(); i++) {
             gradleBuilder.inside() {
                 ws("${pwd()}/${java.util.UUID.randomUUID()}") {
                     unstash 'sources'
-                    sh "export GRADLE_USER_HOME=${pwd()}/${java.util.UUID.randomUUID()}"
-                    sh "gradle ${project}:build"
+                    sh "gradle ----project-cache-dir=${pwd()}/${java.util.UUID.randomUUID()} ${project}:build"
                 }
             }
         }
