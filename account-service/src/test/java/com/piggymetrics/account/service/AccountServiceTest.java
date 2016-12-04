@@ -1,13 +1,20 @@
 package com.piggymetrics.account.service;
 
+import com.piggymetrics.account.AllureTestRunner;
 import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.*;
 import com.piggymetrics.account.repository.AccountRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Step;
+import ru.yandex.qatools.allure.annotations.Title;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -17,9 +24,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@Description("This is an example test suite")
+@RunWith(AllureTestRunner.class)
 public class AccountServiceTest {
 
-	@InjectMocks
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @InjectMocks
 	private AccountServiceImpl accountService;
 
 	@Mock
@@ -36,16 +47,20 @@ public class AccountServiceTest {
 		initMocks(this);
 	}
 
+    @Title("Successful test")
 	@Test
 	public void shouldFindByName() {
 
+        logInfo("Prepare account");
 		final Account account = new Account();
 		account.setName("test");
 
+		logInfo("Try to find account");
 		when(accountService.findByName(account.getName())).thenReturn(account);
 		Account found = accountService.findByName(account.getName());
 
-		assertEquals(account, found);
+        logInfo("Assert account");
+        assertEquals(account, found);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -146,4 +161,9 @@ public class AccountServiceTest {
 		when(accountService.findByName("test")).thenReturn(null);
 		accountService.saveChanges("test", update);
 	}
+
+	@Step("{0}")
+	private void logInfo(String s) {
+	    log.info(s);
+    }
 }
