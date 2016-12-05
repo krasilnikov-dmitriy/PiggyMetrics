@@ -46,7 +46,14 @@ node {
     gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
     stage('Build') {
-        parallel builds
+//        parallel builds
+
+        gradleBuilder.inside() {
+            ws("${pwd()}/${java.util.UUID.randomUUID()}") {
+                unstash 'sources'
+                sh "gradle --project-cache-dir=${pwd()}/account-service account-service:build"
+            }
+        }
     }
 
     stage("Push images") {
