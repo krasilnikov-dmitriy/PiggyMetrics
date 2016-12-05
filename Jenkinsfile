@@ -50,7 +50,7 @@ node {
 
             gradleBuilder.inside() {
                 unstash 'sources'
-                sh "gradle --project-cache-dir=${pwd()}/account-service account-service:build"
+                sh "gradle --project-cache-dir=${pwd()}/account-service account-service:build --info --stacktrace"
             }
         }
 
