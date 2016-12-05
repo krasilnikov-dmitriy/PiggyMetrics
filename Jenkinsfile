@@ -52,7 +52,7 @@ node {
                 unstash 'sources'
                 sh "ls -ltr"
                 sh "pwd"
-                sh "gradle --project-cache-dir=${pwd()}/account-service account-service:build --info --stacktrace"
+                sh "gradle --project-cache-dir=${pwd()}/account-service/.gradle account-service:build --info --stacktrace"
             }
         }
 
