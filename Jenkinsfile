@@ -21,10 +21,7 @@ for (int i = 0; i < projects.size(); i++) {
         stage("Build ${project}") {
 
             gradleBuilder.inside() {
-                ws("${pwd()}/${java.util.UUID.randomUUID()}") {
-                    unstash 'sources'
-                    sh "gradle ----project-cache-dir=${pwd()}/${java.util.UUID.randomUUID()} ${project}:build"
-                }
+                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
             }
         }
     }
@@ -46,14 +43,7 @@ node {
         gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
         stage('Build') {
-//        parallel builds
-
-            gradleBuilder.inside() {
-                unstash 'sources'
-                sh "ls -ltr"
-                sh "pwd"
-                sh "gradle --project-cache-dir=${pwd()}/account-service/.gradle account-service:build --info --stacktrace"
-            }
+            parallel builds
         }
 
         stage("Push images") {
