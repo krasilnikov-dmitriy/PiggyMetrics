@@ -75,7 +75,7 @@ node {
                 }
 
 
-                allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
+                def allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
                 allureBuilder.inside() {
                     sh "allure generate ${pwd()}/build/allure-results -o ${pwd()}/build/allure-reports"
                 }
