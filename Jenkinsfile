@@ -60,18 +60,10 @@ node {
             stage('Publish test reports') {
                 def allureCollectedResults = new File("${pwd()}/build/allure-results")
 
-                if (!allureCollectedResults.exists()) {
-                    allureCollectedResults.mkdirs()
-                }
-
+                sh "[ -d ${pwd()}/build/allure-results ] || mkdir -p ${pwd()}/build/allure-results"
                 for (int i = 0; i < projects.size(); i++) {
                     def project = projects[i]
-
-                    def allureProjectResults = new File("${pwd()}/${project}/build/allure-results")
-
-                    if (allureProjectResults.exists()) {
-                        sh "cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results"
-                    }
+                    sh "[ -d ${pwd()}/${project}/build/allure-results ] && cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results"
                 }
 
 
