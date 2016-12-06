@@ -17,15 +17,9 @@ for (int i = 0; i < projects.size(); i++) {
     def project = projects[i]
 
     builds["Build ${project}"] = {
-        if (project == "account-service") {
-            stage("Build ${project}") {
-
-                gradleBuilder.inside() {
-
-                    sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
-//                    sh "echo ${pwd()}/${project}/build/allure-results/*.xml"
-//                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results/*.xml"
-                }
+        stage("Build ${project}") {
+            gradleBuilder.inside() {
+                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
             }
         }
     }
@@ -64,16 +58,33 @@ node {
             }
 
             stage('Publish test reports') {
+                def allureCollectedResults = new File("${pwd()}/build/allure-results")
+
+                if (!allureCollectedResults.exists()) {
+                    allureCollectedResults.mkdirs()
+                }
+
+                for (int i = 0; i < projects.size(); i++) {
+                    def project = projects[i]
+
+                    def allureProjectResults = new File("${pwd()}/${project}/build/allure-results")
+
+                    if (allureProjectResults.exists()) {
+                        sh "cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results"
+                    }
+                }
+
+
                 allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
                 allureBuilder.inside() {
-                    sh "allure generate ${pwd()}/account-service/build/allure-results -o ${pwd()}/account-service/build/allure-reports"
+                    sh "allure generate ${pwd()}/build/allure-results -o ${pwd()}/build/allure-reports"
                 }
 
                 publishHTML (target: [
                         allowMissing: false,
                         alwaysLinkToLastBuild: false,
                         keepAll: true,
-                        reportDir: "${pwd()}/account-service/build/allure-reports",
+                        reportDir: "${pwd()}/build/allure-reports",
                         reportFiles: 'index.html',
                         reportName: "Allure Report"
                 ])
