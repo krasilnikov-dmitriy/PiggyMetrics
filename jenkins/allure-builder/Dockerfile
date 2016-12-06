@@ -1,5 +1,5 @@
 FROM centos:7
-MAINTAINER Maxfield Stewart
+MAINTAINER Krasilnikov Dmitry
 
 # Install Essentials
 RUN yum update -y && \
