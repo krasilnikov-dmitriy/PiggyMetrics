@@ -17,9 +17,7 @@ for (int i = 0; i < projects.size(); i++) {
     def project = projects[i]
 
     builds["Build ${project}"] = {
-
         stage("Build ${project}") {
-
             gradleBuilder.inside() {
                 sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
             }
@@ -35,36 +33,56 @@ for (int i = 0; i < projects.size(); i++) {
 
 node {
     ws("${pwd()}/${java.util.UUID.randomUUID()}") {
-        stage('Checkout') {
-            checkout scm
-            stash name: 'sources'
-        }
+        try {
+            stage('Checkout') {
+                checkout scm
+                stash name: 'sources'
+            }
 
-        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
+            gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        stage('Build') {
-            parallel builds
-        }
+            stage('Build') {
+                parallel builds
+            }
 
-        stage("Push images") {
-            sh "echo Push images"
-        }
+            stage("Push images") {
+                sh "echo Push images"
+            }
 
-        stage('Component tests') {
+            stage('Component tests') {
 //            parallel componentTests
-        }
+            }
 
-        stage('Integration tests') {
-            sh "echo \"Integration tests\""
-        }
+            stage('Integration tests') {
+                sh "echo \"Integration tests\""
+            }
 
-        stage('Publish test reports') {
-//        publishers {
-//            allure(['allure-results'])
-//        }
-        }
+            stage('Publish test reports') {
+                sh "[ -d ${pwd()}/build/allure-results ] || mkdir -p ${pwd()}/build/allure-results"
+                for (int i = 0; i < projects.size(); i++) {
+                    def project = projects[i]
+                    sh "([ -d ${pwd()}/${project}/build/allure-results ] && cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results) || echo \"Allure results not found for ${project}\""
+                }
 
-        stage('Release') {
+
+                def allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
+                allureBuilder.inside() {
+                    sh "allure generate ${pwd()}/build/allure-results -o ${pwd()}/build/allure-reports"
+                }
+
+                publishHTML (target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "${pwd()}/build/allure-reports",
+                        reportFiles: 'index.html',
+                        reportName: "Allure Report"
+                ])
+
+                junit allowEmptyResults: true, testResults: '**/build/test-reports/*.xml'
+            }
+
+            stage('Release') {
 //            def release = input(message: 'Do you want to release this build?',
 //                    parameters: [[$class      : 'BooleanParameterDefinition',
 //                                  defaultValue: false,
@@ -88,10 +106,13 @@ node {
 //                    sh "echo \"Push docker image tag\""
 //                }
 //            }
-        }
+            }
 
-        stage('Done') {
-            sh "echo Done"
+            stage('Done') {
+                sh "echo Done"
+            }
+        } catch (Exception ex) {
+            sh "echo ${ex.message}"
         }
     }
 }
