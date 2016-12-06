@@ -19,11 +19,11 @@ ENV ALLURE_SHA a6f6380776219be42997ccf68df1faa7e90b93d5a8925bc7b04ee67d0a8888ab
 RUN useradd -u 1000 -m -s /bin/bash jenkins
 
 RUN cd /usr/lib \
- && curl -fl https://github.com/allurefw/allure-report/releases/download/${ALLURE_VERSION}/allure-commandline.zip -o allure-commandline.zip \
+ && curl -fL https://github.com/allurefw/allure-report/releases/download/${ALLURE_VERSION}/allure-commandline.zip -o allure-commandline.zip \
  && echo "$ALLURE_SHA allure-commandline.zip" | sha256sum -c - \
  && unzip "allure-commandline.zip" -d allure-commandline\
  && ln -s "/usr/lib/allure-commandline/bin/allure" /usr/bin/allure \
- && rm "gradle-bin.zip"
+ && rm "allure-commandline.zip"
 
 # Set Appropriate Environmental Variables
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64/
