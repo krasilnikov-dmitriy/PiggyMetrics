@@ -58,8 +58,6 @@ node {
             }
 
             stage('Publish test reports') {
-                def allureCollectedResults = new File("${pwd()}/build/allure-results")
-
                 sh "[ -d ${pwd()}/build/allure-results ] || mkdir -p ${pwd()}/build/allure-results"
                 for (int i = 0; i < projects.size(); i++) {
                     def project = projects[i]
