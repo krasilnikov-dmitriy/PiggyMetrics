@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @Description("This is an example test suite")
-//@RunWith(AllureTestRunner.class)
+@RunWith(AllureTestRunner.class)
 public class AccountServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

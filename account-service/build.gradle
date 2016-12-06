@@ -59,7 +59,8 @@ task generateAllureReport(type: Exec) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', "${parent.projectDir}\\allure-cli\\bin\\allure.bat generate ${projectDir}\\target\\allure-results -o ${projectDir}\\target\\allure-reports"
     } else {
-        commandLine "${parent.projectDir}/allure-cli/bin/allure generate ${projectDir}/target/allure-result -o ${projectDir}/target/allure-reports"
+        commandLine "sh", "-c", "${parent.projectDir}/allure-cli/bin/allure generate ${projectDir}/build/allure-results -o ${projectDir}/build/allure-reports"
+//        commandLine "${parent.projectDir}/allure-cli/bin/allure generate ${projectDir}/build/allure-results -o ${projectDir}/build/allure-reports"
     }
 }
 
@@ -69,6 +70,6 @@ task openAllureReport(type: Exec) {
     if (System.getProperty('os.name').toLowerCase().contains('windows')) {
         commandLine 'cmd', '/c', "${parent.projectDir}\\allure-cli\\bin\\allure.bat open ${projectDir}\\target\\allure-reports"
     } else {
-        commandLine "${parent.projectDir}/allure-cli/bin/allure report ${projectDir}/target/allure-reports"
+        commandLine "sh", "-c", "${parent.projectDir}/allure-cli/bin/allure report ${projectDir}/target/allure-reports"
     }
 }
