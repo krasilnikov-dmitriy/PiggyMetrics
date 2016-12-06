@@ -68,7 +68,15 @@ node {
                 allureBuilder.inside() {
                     sh "allure generate ${pwd()}/account-service/build/allure-results -o ${pwd()}/account-service/build/allure-reports"
                 }
-                allure([commandline: 'allure', includeProperties: false, jdk: '', results: [[path: "${pwd()}/account-service/build/allure-results"]]])
+
+                publishHTML (target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: "${pwd()}/account-service/build/allure-reports",
+                        reportFiles: 'index.html',
+                        reportName: "Allure Report"
+                ])
             }
 
             stage('Release') {
