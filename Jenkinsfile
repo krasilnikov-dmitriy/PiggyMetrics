@@ -22,7 +22,9 @@ for (int i = 0; i < projects.size(); i++) {
 
             gradleBuilder.inside() {
                 sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
-                stash name: "${project}-allure-results", includes: "${pwd()}/${project}/build/allure-results"
+                if (project == "account-service") {
+                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results"
+                }
             }
         }
     }
@@ -61,12 +63,13 @@ node {
             }
 
             stage('Publish test reports') {
-                for (int i = 0; i < projects.size(); i++) {
-                    def project = projects[i]
-                    unstash "${project}-allure-results"
-                }
+//                for (int i = 0; i < projects.size(); i++) {
+//                    def project = projects[i]
+//                    unstash "allure-results"
+//                }
+//                unstash "allure-results"
                 publishers {
-                    allure(['build/allure-results'])
+                    allure(['account-service/build/allure-results'])
                 }
             }
 
