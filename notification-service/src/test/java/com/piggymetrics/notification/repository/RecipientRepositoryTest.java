@@ -7,20 +7,24 @@ import com.piggymetrics.notification.domain.NotificationSettings;
 import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
 import org.apache.commons.lang.time.DateUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.testng.annotations.Test;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = NotificationServiceApplication.class)
-public class RecipientRepositoryTest {
+
+@ContextConfiguration(classes = NotificationServiceApplication.class, initializers = ConfigFileApplicationContextInitializer.class)
+@WebAppConfiguration
+public class RecipientRepositoryTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private RecipientRepository repository;
@@ -87,6 +91,8 @@ public class RecipientRepositoryTest {
 		List<Recipient> found = repository.findReadyForRemind();
 		assertFalse(found.isEmpty());
 	}
+
+
 
 	@Test
 	public void shouldNotFindReadyForRemindWhenFrequencyIsWeeklyAndLastNotifiedWasYesterday() {

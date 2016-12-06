@@ -4,18 +4,19 @@ import com.google.common.collect.ImmutableMap;
 import com.piggymetrics.statistics.client.ExchangeRatesClient;
 import com.piggymetrics.statistics.domain.Currency;
 import com.piggymetrics.statistics.domain.ExchangeRatesContainer;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ExchangeRatesServiceImplTest {
 
@@ -25,7 +26,7 @@ public class ExchangeRatesServiceImplTest {
 	@Mock
 	private ExchangeRatesClient client;
 
-	@Before
+	@BeforeTest
 	public void setup() {
 		initMocks(this);
 	}
@@ -88,7 +89,7 @@ public class ExchangeRatesServiceImplTest {
 		assertTrue(expectedConvertionResult.compareTo(result) == 0);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailToConvertWhenAmountIsNull() {
 		ratesService.convert(Currency.EUR, Currency.RUB, null);
 	}

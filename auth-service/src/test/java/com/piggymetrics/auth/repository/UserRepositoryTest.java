@@ -2,17 +2,17 @@ package com.piggymetrics.auth.repository;
 
 import com.piggymetrics.auth.AuthApplication;
 import com.piggymetrics.auth.domain.User;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AuthApplication.class)
-public class UserRepositoryTest {
+
+@ContextConfiguration(classes = AuthApplication.class)
+public class UserRepositoryTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private UserRepository repository;

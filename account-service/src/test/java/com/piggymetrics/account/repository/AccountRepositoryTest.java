@@ -1,22 +1,22 @@
 package com.piggymetrics.account.repository;
 
+import com.epam.reportportal.testng.ReportPortalTestNGListener;
 import com.piggymetrics.account.AccountApplication;
 import com.piggymetrics.account.domain.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AccountApplication.class)
-public class AccountRepositoryTest {
+@ContextConfiguration(classes = AccountApplication.class)
+public class AccountRepositoryTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private AccountRepository repository;

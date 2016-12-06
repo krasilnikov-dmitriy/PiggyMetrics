@@ -1,13 +1,12 @@
 package com.piggymetrics.auth;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AuthApplication.class)
-public class AuthServiceApplicationTests {
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.Test;
+
+@ContextConfiguration(classes = AuthApplication.class)
+public class AuthServiceApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void contextLoads() {

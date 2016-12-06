@@ -4,8 +4,6 @@ allprojects {
     version = '1.0-SNAPSHOT'
 }
 
-
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'spring-boot'
@@ -39,4 +37,5 @@ buildscript {
         classpath "io.franzbecker:gradle-lombok:1.6"
         classpath "net.researchgate:gradle-release:2.4.0"
     }
+
 }

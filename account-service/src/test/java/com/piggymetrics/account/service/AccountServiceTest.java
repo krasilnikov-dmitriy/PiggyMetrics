@@ -1,17 +1,15 @@
 package com.piggymetrics.account.service;
 
-import com.piggymetrics.account.AllureTestRunner;
+import com.epam.reportportal.testng.ReportPortalTestNGListener;
 import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.*;
 import com.piggymetrics.account.repository.AccountRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.*;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Step;
 import ru.yandex.qatools.allure.annotations.Title;
@@ -19,13 +17,13 @@ import ru.yandex.qatools.allure.annotations.Title;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 @Description("This is an example test suite")
-//@RunWith(AllureTestRunner.class)
 public class AccountServiceTest {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -42,7 +40,7 @@ public class AccountServiceTest {
 	@Mock
 	private AccountRepository repository;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 	}
@@ -63,7 +61,7 @@ public class AccountServiceTest {
         assertEquals(account, found);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailWhenNameIsEmpty() {
 		accountService.findByName("");
 	}
@@ -80,8 +78,8 @@ public class AccountServiceTest {
 		assertEquals(0, account.getSaving().getAmount().intValue());
 		assertEquals(Currency.getDefault(), account.getSaving().getCurrency());
 		assertEquals(0, account.getSaving().getInterest().intValue());
-		assertEquals(false, account.getSaving().getDeposit());
-		assertEquals(false, account.getSaving().getCapitalization());
+		assertEquals(false, account.getSaving().getDeposit().booleanValue());
+		assertEquals(false, account.getSaving().getCapitalization().booleanValue());
 		assertNotNull(account.getLastSeen());
 
 		verify(authClient, times(1)).createUser(user);
@@ -152,7 +150,7 @@ public class AccountServiceTest {
 		verify(statisticsClient, times(1)).updateStatistics("test", account);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailWhenNoAccountsExistedWithGivenName() {
 		final Account update = new Account();
 		update.setIncomes(Arrays.asList(new Item()));

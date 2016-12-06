@@ -9,17 +9,17 @@ import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
 import com.piggymetrics.notification.service.RecipientService;
 import com.sun.security.auth.UserPrincipal;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -28,10 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = NotificationServiceApplication.class)
+@ContextConfiguration(classes = NotificationServiceApplication.class, initializers = ConfigFileApplicationContextInitializer.class)
 @WebAppConfiguration
-public class RecipientControllerTest {
+public class RecipientControllerTest extends AbstractTestNGSpringContextTests {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -43,7 +42,7 @@ public class RecipientControllerTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(recipientController).build();

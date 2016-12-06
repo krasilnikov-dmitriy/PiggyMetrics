@@ -6,17 +6,15 @@ import com.piggymetrics.account.AccountApplication;
 import com.piggymetrics.account.domain.*;
 import com.piggymetrics.account.service.AccountService;
 import com.sun.security.auth.UserPrincipal;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,10 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AccountApplication.class)
-@WebAppConfiguration
-public class AccountControllerTest {
+@ContextConfiguration(classes = AccountApplication.class)
+public class AccountControllerTest extends AbstractTestNGSpringContextTests {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -42,7 +38,7 @@ public class AccountControllerTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 		this.mockMvc = MockMvcBuilders.standaloneSetup(accountController).build();

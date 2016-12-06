@@ -7,10 +7,11 @@ import com.piggymetrics.statistics.domain.timeseries.DataPoint;
 import com.piggymetrics.statistics.domain.timeseries.ItemMetric;
 import com.piggymetrics.statistics.domain.timeseries.StatisticMetric;
 import com.piggymetrics.statistics.repository.DataPointRepository;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,11 +21,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class StatisticsServiceImplTest {
 
@@ -37,7 +38,7 @@ public class StatisticsServiceImplTest {
 	@Mock
 	private DataPointRepository repository;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 	}
@@ -51,12 +52,12 @@ public class StatisticsServiceImplTest {
 		assertEquals(list, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailToFindDataPointWhenAccountNameIsNull() {
 		statisticsService.findByAccountName(null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailToFindDataPointWhenAccountNameIsEmpty() {
 		statisticsService.findByAccountName("");
 	}
@@ -157,4 +158,6 @@ public class StatisticsServiceImplTest {
 
 		verify(repository, times(1)).save(dataPoint);
 	}
+
+
 }

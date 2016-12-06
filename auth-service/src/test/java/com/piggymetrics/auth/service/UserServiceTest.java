@@ -2,10 +2,11 @@ package com.piggymetrics.auth.service;
 
 import com.piggymetrics.auth.domain.User;
 import com.piggymetrics.auth.repository.UserRepository;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -18,7 +19,7 @@ public class UserServiceTest {
 	@Mock
 	private UserRepository repository;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 	}
@@ -34,7 +35,7 @@ public class UserServiceTest {
 		verify(repository, times(1)).save(user);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailWhenUserAlreadyExists() {
 
 		User user = new User();

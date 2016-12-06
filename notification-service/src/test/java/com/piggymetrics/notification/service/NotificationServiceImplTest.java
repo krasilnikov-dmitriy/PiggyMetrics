@@ -4,10 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.piggymetrics.notification.client.AccountServiceClient;
 import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class NotificationServiceImplTest {
 	@Mock
 	private EmailService emailService;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 	}

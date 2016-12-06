@@ -1,15 +1,14 @@
 package com.piggymetrics.statistics;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.testng.annotations.Test;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = StatisticsApplication.class)
+@ContextConfiguration(classes = StatisticsApplication.class, initializers = ConfigFileApplicationContextInitializer.class)
 @WebAppConfiguration
-public class StatisticsServiceApplicationTests {
+public class StatisticsServiceApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void contextLoads() {

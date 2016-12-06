@@ -7,19 +7,20 @@ import com.piggymetrics.notification.domain.NotificationSettings;
 import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
 import com.piggymetrics.notification.repository.RecipientRepository;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 
 public class RecipientServiceImplTest {
 
@@ -29,7 +30,7 @@ public class RecipientServiceImplTest {
 	@Mock
 	private RecipientRepository repository;
 
-	@Before
+	@BeforeMethod
 	public void setup() {
 		initMocks(this);
 	}
@@ -45,7 +46,7 @@ public class RecipientServiceImplTest {
 		assertEquals(recipient, found);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void shouldFailToFindRecipientWhenAccountNameIsEmpty() {
 		recipientService.findByAccountName("");
 	}
@@ -76,6 +77,8 @@ public class RecipientServiceImplTest {
 		assertNotNull(saved.getScheduledNotifications().get(NotificationType.REMIND).getLastNotified());
 		assertEquals("test", saved.getAccountName());
 	}
+
+
 
 	@Test
 	public void shouldFindReadyToNotifyWhenNotificationTypeIsBackup() {
