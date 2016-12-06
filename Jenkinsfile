@@ -23,8 +23,8 @@ for (int i = 0; i < projects.size(); i++) {
                 gradleBuilder.inside() {
 
                     sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
-
-                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results/**/*"
+                    sh "echo ${pwd()}/${project}/build/allure-results/*.xml"
+                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results/*.xml"
                 }
             }
         }
