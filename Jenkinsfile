@@ -69,9 +69,7 @@ node {
 //                    unstash "allure-results"
 //                }
 //                unstash "allure-results"
-                publishers {
-                    allure(['account-service/build/allure-results'])
-                }
+                allure(['account-service/build/allure-results'])
             }
 
             stage('Release') {
