@@ -17,13 +17,14 @@ for (int i = 0; i < projects.size(); i++) {
     def project = projects[i]
 
     builds["Build ${project}"] = {
+        if (project == "account-service") {
+            stage("Build ${project}") {
 
-        stage("Build ${project}") {
+                gradleBuilder.inside() {
 
-            gradleBuilder.inside() {
-                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
-                if (project == "account-service") {
-                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results"
+                    sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
+
+                    stash name: "allure-results", includes: "${pwd()}/${project}/build/allure-results/**/*"
                 }
             }
         }
