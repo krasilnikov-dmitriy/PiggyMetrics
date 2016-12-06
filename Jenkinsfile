@@ -36,40 +36,41 @@ for (int i = 0; i < projects.size(); i++) {
 
 node {
     ws("${pwd()}/${java.util.UUID.randomUUID()}") {
-        stage('Checkout') {
-            checkout scm
-            stash name: 'sources'
-        }
+        try {
+            stage('Checkout') {
+                checkout scm
+                stash name: 'sources'
+            }
 
-        gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
+            gradleBuilder = docker.build('gradle_builder', 'jenkins/gradle-builder')
 
-        stage('Build') {
-            parallel builds
-        }
+            stage('Build') {
+                parallel builds
+            }
 
-        stage("Push images") {
-            sh "echo Push images"
-        }
+            stage("Push images") {
+                sh "echo Push images"
+            }
 
-        stage('Component tests') {
+            stage('Component tests') {
 //            parallel componentTests
-        }
-
-        stage('Integration tests') {
-            sh "echo \"Integration tests\""
-        }
-
-        stage('Publish test reports') {
-            for (int i = 0; i < projects.size(); i++) {
-                def project = projects[i]
-                unstash "${project}-allure-results"
             }
-            publishers {
-                allure(['build/allure-results'])
-            }
-        }
 
-        stage('Release') {
+            stage('Integration tests') {
+                sh "echo \"Integration tests\""
+            }
+
+            stage('Publish test reports') {
+                for (int i = 0; i < projects.size(); i++) {
+                    def project = projects[i]
+                    unstash "${project}-allure-results"
+                }
+                publishers {
+                    allure(['build/allure-results'])
+                }
+            }
+
+            stage('Release') {
 //            def release = input(message: 'Do you want to release this build?',
 //                    parameters: [[$class      : 'BooleanParameterDefinition',
 //                                  defaultValue: false,
@@ -93,10 +94,13 @@ node {
 //                    sh "echo \"Push docker image tag\""
 //                }
 //            }
-        }
+            }
 
-        stage('Done') {
-            sh "echo Done"
+            stage('Done') {
+                sh "echo Done"
+            }
+        } catch (Exception ex) {
+            sh "echo ${ex.message}"
         }
     }
 }
