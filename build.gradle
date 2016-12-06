@@ -1,9 +1,10 @@
 allprojects {
     apply plugin: 'idea'
-
     group = 'com.piggymetrics'
     version = '1.0-SNAPSHOT'
 }
+
+
 
 subprojects {
     apply plugin: 'java'
@@ -11,23 +12,25 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-
     repositories {
         mavenLocal()
-
+        jcenter()
         maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "http://dl.bintray.com/epam/reportportal" }
     }
 }
 
 buildscript {
     repositories {
         mavenLocal()
+        jcenter()
         maven {
             url 'http://repo.maven.apache.org/maven2'
         }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven { url "http://dl.bintray.com/epam/reportportal" }
     }
 
     dependencies {
