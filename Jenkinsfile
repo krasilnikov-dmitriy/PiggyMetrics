@@ -61,7 +61,7 @@ node {
                 sh "[ -d ${pwd()}/build/allure-results ] || mkdir -p ${pwd()}/build/allure-results"
                 for (int i = 0; i < projects.size(); i++) {
                     def project = projects[i]
-                    sh "[ -d ${pwd()}/${project}/build/allure-results ] && cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results"
+                    sh "([ -d ${pwd()}/${project}/build/allure-results ] && cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results) || echo \"Allure results not found for ${project}\""
                 }
 
 
