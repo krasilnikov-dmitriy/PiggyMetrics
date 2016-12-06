@@ -64,12 +64,10 @@ node {
             }
 
             stage('Publish test reports') {
-//                for (int i = 0; i < projects.size(); i++) {
-//                    def project = projects[i]
-//                    unstash "allure-results"
-//                }
-//                unstash "allure-results"
-                allure(['account-service/build/allure-results'])
+                allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
+                allureBuilder.inside() {
+                    sh "allure generate ${pwd()}/account-service/build/allure-results -o ${pwd()}/account-service/build/allure-reports"
+                }
             }
 
             stage('Release') {
