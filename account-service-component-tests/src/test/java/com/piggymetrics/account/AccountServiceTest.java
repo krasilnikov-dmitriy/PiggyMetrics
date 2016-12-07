@@ -24,10 +24,6 @@ public class AccountServiceTest {
 
     @BeforeClass
     public static void setUp() {
-
-        System.out.println(System.getenv("ACCOUNT_SERVICE_HOST"));
-        System.out.println(System.getenv("ACCOUNT_SERVICE_PORT"));
-
         RestAssured.baseURI = System.getenv("ACCOUNT_SERVICE_HOST"); //"http://account-service";
         RestAssured.port = Integer.parseInt(System.getenv("ACCOUNT_SERVICE_PORT"));
         RestAssured.basePath = System.getenv("ACCOUNT_SERVICE_BASE_PATH");
@@ -60,9 +56,9 @@ public class AccountServiceTest {
 
         logInfo("Get current user account");
         given()
-            .auth().oauth2("SOME_TOKEN")
+//            .auth().oauth2("SOME_TOKEN")
         .when()
-            .get("/admin")
+            .get("/demo")
         .then()
             .statusCode(HTTP_OK);
 
