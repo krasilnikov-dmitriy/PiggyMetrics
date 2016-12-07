@@ -38,7 +38,7 @@ services:
     image: sqshq/piggymetrics-gateway
     restart: always
     ports:
-      - 80:4000
+      - 8081:4000
     logging:
       options:
         max-size: "10m"
