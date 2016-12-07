@@ -6,7 +6,7 @@ name            = Docker Repository \n\
 baseurl         = https://yum.dockerproject.org/repo/main/centos/7/ \n\
 enabled         = 1 \n\
 gpgcheck        = 1 \n\
-gpgkey=https://yum.dockerproject.org/gpg' > /etc/yum.repos.d/docker.rep
+gpgkey=https://yum.dockerproject.org/gpg' > /etc/yum.repos.d/docker.repo
 
 # Install Essentials
 RUN yum update -y && \
