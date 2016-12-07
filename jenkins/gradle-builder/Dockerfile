@@ -36,6 +36,17 @@ RUN cd /usr/lib \
 RUN curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
+# Copy in the Docker certs, we'll use /usr/local/etc for them
+COPY certs/ca.pem /home/jenkins/.docker/ca.pem
+COPY certs/cert.pem /home/jenkins/.docker/cert.pem
+COPY certs/key.pem /home/jenkins/.docker/key.pem
+
+RUN chmod +r /home/jenkins/.docker/ca.pem
+RUN chmod +r /home/jenkins/.docker/cert.pem
+RUN chmod +r /home/jenkins/.docker/key.pem
+
+RUN chown -R jenkins:jenkins /home/jenkins/.docker
+
 # Set Appropriate Environmental Variables
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64/
 ENV GRADLE_HOME /usr/lib/gradle
