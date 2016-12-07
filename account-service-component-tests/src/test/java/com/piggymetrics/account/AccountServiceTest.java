@@ -3,10 +3,10 @@ package com.piggymetrics.account;
 import com.jayway.restassured.RestAssured;
 import static org.hamcrest.core.Is.is;
 import com.piggymetrics.emulators.AuthServiceEmulatorClient;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Step;
 import ru.yandex.qatools.allure.annotations.Title;
 

@@ -31,18 +31,18 @@ dependencies {
 dockerCompose {
     useComposeFiles = [new File(project.rootProject.getProjectDir(), 'docker-compose.account-service.component.yml').absolutePath]
     stopContainers = true
-    removeContainers = true
-    removeVolumes = true
+    removeContainers = false
+    removeVolumes = false
     waitForHealthyStateTimeout = Duration.ofMinutes(1)
     waitForTcpPortsTimeout = Duration.ofMinutes(3)
 }
 dockerCompose.isRequiredBy(test)
 
 test {
-//    useTestNG() {
-//        setSuiteName("account-service-component-tests")
-////        options.listeners << 'com.epam.reportportal.testng.ReportPortalTestNGListener'
-//    }
+    useTestNG() {
+        setSuiteName("account-service-component-tests")
+//        options.listeners << 'com.epam.reportportal.testng.ReportPortalTestNGListener'
+    }
 }
 
 
