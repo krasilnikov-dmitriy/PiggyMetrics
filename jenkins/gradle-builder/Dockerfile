@@ -1,6 +1,13 @@
 FROM centos:7
 MAINTAINER Krasilnikov Dmitry
 
+RUN echo $'[dockerrepo] \n\
+name            = Docker Repository \n\
+baseurl         = https://yum.dockerproject.org/repo/main/centos/7/ \n\
+enabled         = 1 \n\
+gpgcheck        = 1 \n\
+gpgkey=https://yum.dockerproject.org/gpg' > /etc/yum.repos.d/docker.rep
+
 # Install Essentials
 RUN yum update -y && \
     yum clean all
@@ -8,6 +15,7 @@ RUN yum update -y && \
 # Install Packages
 RUN yum install -y wget && \
     yum install -y unzip && \
+    yum install -y docker-engine && \
 	yum install -y java-1.8.0-openjdk-devel && \
 	yum install -y sudo && \
 	yum clean all
@@ -24,6 +32,9 @@ RUN cd /usr/lib \
  && unzip "gradle-bin.zip" \
  && ln -s "/usr/lib/gradle-${GRADLE_VERSION}/bin/gradle" /usr/bin/gradle \
  && rm "gradle-bin.zip"
+
+RUN curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
 
 # Set Appropriate Environmental Variables
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64/
