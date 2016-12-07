@@ -19,7 +19,7 @@ for (int i = 0; i < projects.size(); i++) {
     builds["Build ${project}"] = {
         stage("Build ${project}") {
             gradleBuilder.inside() {
-                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
+                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build -x ${project}:test --info"
             }
         }
     }
