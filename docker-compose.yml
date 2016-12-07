@@ -75,6 +75,8 @@ services:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-account-service
     restart: always
+    ports:
+      - 6000:6000
     logging:
       options:
         max-size: "10m"

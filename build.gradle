@@ -36,6 +36,7 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE"
         classpath "io.franzbecker:gradle-lombok:1.6"
         classpath "net.researchgate:gradle-release:2.4.0"
+        classpath "com.avast.gradle:docker-compose-gradle-plugin:0.3.15"
     }
 
 }
