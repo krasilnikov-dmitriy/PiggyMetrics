@@ -19,7 +19,7 @@ for (int i = 0; i < projects.size(); i++) {
     builds["Build ${project}"] = {
         stage("Build ${project}") {
             gradleBuilder.inside() {
-                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build -x ${project}:test --info"
+                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
             }
         }
     }
@@ -66,6 +66,7 @@ node {
                     sh "([ -d ${pwd()}/${project}/build/allure-results ] && cp -r ${pwd()}/${project}/build/allure-results/. ${pwd()}/build/allure-results) || echo \"Allure results not found for ${project}\""
                 }
 
+                sh "([ -d ${pwd()}/account-service-component-tests/build/allure-results ] && cp -r ${pwd()}/account-service-component-tests/build/allure-results/. ${pwd()}/build/allure-results) || echo \"Allure results not found for account-service-component-tests\""
 
                 def allureBuilder = docker.build('allure_builder', 'jenkins/allure-builder')
                 allureBuilder.inside() {
