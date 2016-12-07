@@ -50,7 +50,9 @@ node {
             }
 
             stage('Component tests') {
-//            parallel componentTests
+                gradleBuilder.inside() {
+                    sh "gradle --project-cache-dir=${pwd()}/account-service-component-tests/.gradle account-service-component-tests:test --info"
+                }
             }
 
             stage('Integration tests') {
