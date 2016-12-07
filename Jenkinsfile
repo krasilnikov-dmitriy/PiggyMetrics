@@ -81,7 +81,7 @@ node {
                         reportName: "Allure Report"
                 ])
 
-                junit allowEmptyResults: true, testResults: '**/build/test-results/*.xml'
+                junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
             }
 
             stage('Release') {
