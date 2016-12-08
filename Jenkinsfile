@@ -10,6 +10,8 @@ def projects = [
         'registry',
         'statistics-service'
 ]
+def unitTestsFailed = false
+def componentTestsFailed = false
 
 def gradleBuilder
 
@@ -18,8 +20,12 @@ for (int i = 0; i < projects.size(); i++) {
 
     builds["Build ${project}"] = {
         stage("Build ${project}") {
-            gradleBuilder.inside() {
-                sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
+            try {
+                gradleBuilder.inside() {
+                    sh "gradle --project-cache-dir=${pwd()}/${project}/.gradle ${project}:build --info"
+                }
+            } catch (Exception ex) {
+                unitTestsFailed = true
             }
         }
     }
@@ -33,7 +39,6 @@ for (int i = 0; i < projects.size(); i++) {
 
 node {
     ws("${pwd()}/${java.util.UUID.randomUUID()}") {
-        try {
             stage('Checkout') {
                 checkout scm
                 stash name: 'sources'
@@ -50,8 +55,12 @@ node {
             }
 
             stage('Component tests') {
-                gradleBuilder.inside() {
-                    sh "gradle --project-cache-dir=${pwd()}/account-service-component-tests/.gradle account-service-component-tests:test --info"
+                try {
+                    gradleBuilder.inside() {
+                        sh "gradle --project-cache-dir=${pwd()}/account-service-component-tests/.gradle account-service-component-tests:test --info"
+                    }
+                } catch (Exception ex) {
+                    componentTestsFailed = true
                 }
             }
 
@@ -86,36 +95,51 @@ node {
             }
 
             stage('Release') {
-//            def release = input(message: 'Do you want to release this build?',
-//                    parameters: [[$class      : 'BooleanParameterDefinition',
-//                                  defaultValue: false,
-//                                  description : 'Ticking this box will do a release',
-//                                  name        : 'Release']])
-//
-//            if (release) {
-//                stage("Iterate version") {
-//                    sh "echo \"Iterate version\""
-//                }
-//
-//                stage("Create docker image tag") {
-//                    sh "echo \"Create docker image tag\""
-//                }
-//
-//                stage("Push docker image tag") {
-//                    sh "echo \"Push docker image tag\""
-//                }
-//
-//                stage("Deploy on production") {
-//                    sh "echo \"Push docker image tag\""
-//                }
-//            }
+                def release = input(message: "Do you want to release this build? ${unitTestsFailed ? "Unit" : ""}" +
+                        " ${componentTestsFailed && unitTestsFailed ? " and Component" : componentTestsFailed ? "Component" : ""}" +
+                        " tests failed",
+                    parameters: [[$class      : 'BooleanParameterDefinition',
+                                  defaultValue: false,
+                                  description : 'Ticking this box will do a release',
+                                  name        : 'Release']])
+
+                if (release) {
+                    stage("Iterate version") {
+                        sh "echo \"Iterate version\""
+                    }
+
+                    stage("Create docker image tag") {
+                        sh "echo \"Create docker image tag\""
+                    }
+
+                    stage("Push docker image tag") {
+                        sh "echo \"Push docker image tag\""
+                    }
+
+                    stage("Deploy on production") {
+                        sh "echo \"Push docker image tag\""
+                    }
+                }
             }
 
             stage('Done') {
-                sh "echo Done"
+                def description = ""
+                if(unitTestsFailed) {
+                    description = "Unit tests failed!"
+                    currentBuild.result = 'FAILURE'
+                } else if (componentTestsFailed) {
+                    if(unitTestsFailed) {
+                        description = "Unit and component tests failed!"
+                    } else {
+                        description = "Component tests failed!"
+                    }
+                    currentBuild.result = 'FAILURE'
+                } else {
+                    currentBuild.description = "YOU ROCK!"
+                    currentBuild.result = 'SUCCESS'
+                }
+                currentBuild.description = description
             }
-        } catch (Exception ex) {
-            sh "echo ${ex.message}"
-        }
+
     }
 }
