@@ -76,7 +76,7 @@ public class AccountServiceTest {
     @Step("{method}")
     private void getCurrentUserAccount() {
         given()
-                //.auth().oauth2("SOME_TOKEN")
+                .auth().oauth2("SOME_TOKEN")
                 .when()
                     .get("/demo")
                 .then()
