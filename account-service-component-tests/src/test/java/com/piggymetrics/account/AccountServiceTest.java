@@ -2,11 +2,21 @@ package com.piggymetrics.account;
 
 import com.jayway.restassured.RestAssured;
 import static org.hamcrest.core.Is.is;
+
+import com.jayway.restassured.filter.Filter;
+import com.jayway.restassured.filter.FilterContext;
+import com.jayway.restassured.filter.log.LogDetail;
+import com.jayway.restassured.internal.print.RequestPrinter;
+import com.jayway.restassured.internal.print.ResponsePrinter;
+import com.jayway.restassured.response.Response;
+import com.jayway.restassured.specification.FilterableRequestSpecification;
+import com.jayway.restassured.specification.FilterableResponseSpecification;
 import com.piggymetrics.emulators.AuthServiceEmulatorClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import ru.yandex.qatools.allure.annotations.Attachment;
 import ru.yandex.qatools.allure.annotations.Step;
 import ru.yandex.qatools.allure.annotations.Title;
 
@@ -23,11 +33,11 @@ public class AccountServiceTest {
     private AuthServiceEmulatorClient authServiceClient = new AuthServiceEmulatorClient();
 
     @BeforeClass
-    public static void setUp() {
+    public void setUp() {
         RestAssured.baseURI = System.getenv("ACCOUNT_SERVICE_HOST"); //"http://account-service";
         RestAssured.port = Integer.parseInt(System.getenv("ACCOUNT_SERVICE_PORT"));
         RestAssured.basePath = System.getenv("ACCOUNT_SERVICE_BASE_PATH");
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.filters(new AllureRequestLoggingFilter(), new AllureResponseLoggingFilter());
     }
 
     @Title("Unauthorized users could't get current user info")
@@ -54,18 +64,53 @@ public class AccountServiceTest {
         logInfo("Mock auth service for return authorized response");
         authServiceClient.mockAuthorizedResponse(null);
 
-        logInfo("Get current user account");
-        given()
-//            .auth().oauth2("SOME_TOKEN")
-        .when()
-            .get("/demo")
-        .then()
-            .statusCode(HTTP_OK);
+        getCurrentUserAccount();
 
     }
 
     @Step("{0}")
     private void logInfo(String s) {
         log.info(s);
+    }
+
+    @Step("{method}")
+    private void getCurrentUserAccount() {
+        given()
+                //.auth().oauth2("SOME_TOKEN")
+                .when()
+                    .get("/demo")
+                .then()
+            .statusCode(HTTP_OK);
+    }
+
+
+    class AllureRequestLoggingFilter implements Filter {
+
+        @Override
+        public Response filter(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec, FilterContext ctx) {
+            print(requestSpec,responseSpec, ctx);
+            return ctx.next(requestSpec, responseSpec);
+        }
+
+        @Attachment("Request")
+        String print(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec, FilterContext ctx) {
+            return  RequestPrinter.print(requestSpec, requestSpec.getMethod().toString(), requestSpec.getURI(), LogDetail.ALL, System.out, true);
+        }
+    }
+
+    class AllureResponseLoggingFilter implements Filter {
+
+        @Override
+        public Response filter(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec, FilterContext ctx) {
+            print(requestSpec,responseSpec, ctx);
+            return ctx.next(requestSpec, responseSpec);
+        }
+
+
+        @Attachment("Response")
+        String print(FilterableRequestSpecification requestSpec, FilterableResponseSpecification responseSpec, FilterContext ctx) {
+            Response response = ctx.next(requestSpec, responseSpec);
+            return  ResponsePrinter.print(response, response, System.out, LogDetail.ALL, true);
+        }
     }
 }
